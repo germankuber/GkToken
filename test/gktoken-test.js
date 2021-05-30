@@ -14,11 +14,11 @@ describe("GkToken", () => {
     firstAccount = accounts[1];
     secondAccount = accounts[2];
     gkToken = await gkToken.connect(owner);
-
   });
   it("Owner should have all tokens", async () => {
     expect((await gkToken.balanceOf(owner.address)).toNumber()).to.equal(1000);
-  });
+  });  
+  
   it("transfer - should throw error if sender does not have tokens", async () => {
     gkToken = await gkToken.connect(firstAccount);
     await expect((gkToken.transfer(secondAccount.address, 100))).to.be
