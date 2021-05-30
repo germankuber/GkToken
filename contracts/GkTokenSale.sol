@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 interface GkTokenInterface {
@@ -13,9 +14,8 @@ interface GkTokenInterface {
         returns (bool success);
 }
 
-contract GkTokenSale {
+contract GkTokenSale is Ownable {
     using SafeMath for uint256;
-    address owner;
     uint256 price;
     GkTokenInterface gkToken;
     uint256 tokenSold;
@@ -23,7 +23,6 @@ contract GkTokenSale {
     event Sold(address _buyer, uint256 amount);
 
     constructor(uint256 _price, address _gkToken) {
-        owner = msg.sender;
         price = _price;
         gkToken = GkTokenInterface(_gkToken);
     }
@@ -43,9 +42,9 @@ contract GkTokenSale {
         emit Sold(msg.sender, _numTokens);
     }
 
-    function endSold() public payable {
-        require(msg.sender == owner, "Only the owner can execute this method");
-        require(gkToken.transfer(owner, gkToken.balanceOf(address(this))));
+    function endSold() public payable onlyOwner {
+        // require(msg.sender == owner, "Only the owner can execute this method");
+        require(gkToken.transfer(owner(), gkToken.balanceOf(address(this))));
         payable(msg.sender).transfer(address(this).balance);
     }
 }

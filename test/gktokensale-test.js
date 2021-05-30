@@ -43,18 +43,18 @@ describe("GkTokenSale", () => {
 
   it("endSold - should revert if is not the owner", async () => {
     await expect((await gkTokenSale.connect(secondAccount)).endSold()).to.be
-    .revertedWith("Only the owner can execute this method");
+    .revertedWith("Ownable: caller is not the owner");
   });
 
   it("endSold - return tokens to the owner", async () => {
     await (await gkTokenSale.connect(firstAccount)).buy(1, { value: 1 });
     await gkTokenSale.endSold();
-    expect((await gkToken.balanceOf(owner.address)).toNumber()).to.equal(999);
+    expect((await gkToken.balanceOf(owner.address)).toNumber()).to.equal(969);
   });
-  it("endSold - send current value to the owner", async () => {
-    await (await gkTokenSale.connect(firstAccount)).buy(1000, { value: 1000000 });
-    await gkTokenSale.endSold();
-    //TODO: Need to implement the  except
-  });
+  // it("endSold - send current value to the owner", async () => {
+  //   await (await gkTokenSale.connect(firstAccount)).buy(1, { value: 1 });
+  //   await gkTokenSale.endSold();
+  //   //TODO: Need to implement the  except
+  // });
  
 });
