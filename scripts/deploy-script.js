@@ -19,7 +19,13 @@ async function main() {
 
   await gkToken.deployed();
 
+  const GkTokenSale = await hre.ethers.getContractFactory("GkToken");
+  const gkTokenSale = await GkTokenSale.deploy(1000);
+
+  await gkTokenSale.deployed();
+
   console.log("GkToken deployed to:", gkToken.address);
+  console.log("GkTokenSale deployed to:", gkTokenSale.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
